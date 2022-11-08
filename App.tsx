@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import {Text} from 'react-native';
+import { Text } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 
@@ -10,52 +10,49 @@ import Navigation from './src/navigation';
 
 import { StreamChat } from 'stream-chat';
 
-import { OverlayProvider, MessageInput,Chat, ChannelList, Channel , MessageList} from "stream-chat-expo";
+import {
+  OverlayProvider,
+  MessageInput, Chat,
+  ChannelList, Channel,
+  MessageList
+} from "stream-chat-expo";
+import AuthContext from './src/contexts/AuthContext';
 
-
-const API_key = "nqexfrcrrhhq";
+const API_key = "94z24kzck433";
 const client = StreamChat.getInstance(API_key);
+
+
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
+  // const colorScheme = useColorScheme();
   const [isReady, setIsReady] = useState(false);
-  const [selectedChannel, setSelectedChannel] = useState(null);
-
-  const connectUser = async () => {
-    await client.connectUser(
-      {
-        id: 'duiga',
-        name: 'dinh dep trai',
-        image: 'https://i.imgur.com/smRjnTm.jpeg',
-      },
-      client.devToken("duiga")
-    );
-    setIsReady(true);
-
-    // const channel =client.channel("team","general",{name:"General"});
-    // await channel.create();
-  };
+  // const [selectedChannel, setSelectedChannel] = useState(null);
 
   useEffect(() => {
-    connectUser();
 
+    return () => {
+      client.disconnectUser();
+    };
   }, [])
 
-  const onChannelSelect = (channel:any) => {
-    setSelectedChannel(channel)
-  }
 
-  if (!isLoadingComplete || !isReady) {
+  //  const onChannelSelect = (channel: any) => {
+  //  setSelectedChannel(channel);
+  //   };
+
+  if (!isLoadingComplete) {
     return null;
   } else {
     return (
 
       <SafeAreaProvider>
-        <OverlayProvider>
-          <Chat client={client}>
-            {/* <navigation colorscheme={colorscheme}/> */}
-            {!selectedChannel ? (<ChannelList onSelect={onChannelSelect} />) : (
+        <AuthContext>
+          <OverlayProvider>
+            <Chat client={client}>
+
+              <Navigation colorScheme={"dark"} />
+              {/* {!selectedChannel ? (<ChannelList onSelect={onChannelSelect} />) : (
               <>
               <Channel channel={selectedChannel}> 
               
@@ -63,15 +60,13 @@ export default function App() {
               <MessageList/>
               <MessageInput/>
                </Channel>
-
-              
               </>
-            )}
+            )} */}
 
-          </Chat>
-
-        </OverlayProvider>
-        <StatusBar />
+            </Chat>
+          </OverlayProvider>
+        </AuthContext>
+        <StatusBar style="light" />
       </SafeAreaProvider>
     );
   }

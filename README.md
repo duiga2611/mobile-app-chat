@@ -14,6 +14,9 @@ npm install
 
  expo install @react-native-community/netinfo expo-document-picker expo-file-system expo-haptics expo-image-manipulator expo-image-picker expo-media-library expo-sharing react-native-gesture-handler react-native-reanimated react-native-svg
 
+ npm install @react-navigation/drawer
+ npm install react-native-gesture-handler react-native-reanimated
+
  B2
 
  "# mobile-app-chat" 
